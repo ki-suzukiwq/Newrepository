@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>顧客一覧ページ</title>
+</head>
+<body>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>コード</th>
+                    <th>顧客名</th>
+                    <th>電話番号</th>
+                    <th>メールアドレス</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <th>{{item[0]}}</th>
+                    <th>{{item[1]}}</th>
+                    <th>{{item[2]}}</th>
+                    <th>{{item[3]}}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>    
+<!-- ボタンを押すと、/templatesに飛ぶ -->
+<form action='/delete' method="POST">
+    <p>＜顧客削除＞</p>
+    <label>
+        顧客名    
+        <input type="text" name="delete_name">
+    </label>
+    <button type="submit">削除</button>
+</form>
+<form action="/" method="get">
+    <input type="submit" value='戻る'>
+</form>
+</body>
+</html>
