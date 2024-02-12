@@ -74,7 +74,6 @@ def result_post():
     # 登録処理
     sql = "INSERT INTO 顧客一覧(コード, 顧客名, 電話番号, メールアドレス) VALUES({}, '{}', '{}', '{}')".format(new_code, name, phone, mladdr)
 
-    print(phone)
     con.execute(sql)
     con.commit()
 
@@ -83,7 +82,7 @@ def result_post():
     data = cur.fetchall()
     con.close()
 
-    return render_template('Putitem.html', data = data)
+    return render_template('Putresult.html', data = data)
 
 
 @app.route('/delete', methods=["POST"])
@@ -92,10 +91,10 @@ def delete_post():
     con = get_db()
 
     # フォームから削除対象の顧客名を取得
-    delete_name = request.form.get("delete_name")
+    delete_id = request.form.get("delete_id")
 
     # 削除処理
-    sql = "DELETE FROM 顧客一覧 WHERE 顧客名='{}'".format(delete_name)
+    sql = "DELETE FROM 顧客一覧 WHERE コード='{}'".format(delete_id)
     con.execute(sql)
     con.commit()
 
@@ -104,7 +103,7 @@ def delete_post():
     data = cur.fetchall()
     con.close()
 
-    return render_template('Getitem.html', data=data)
+    return render_template('Deleteresult.html', data=data)
 
 if __name__ == '__main__':
     app.debug = True
