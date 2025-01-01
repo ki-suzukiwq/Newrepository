@@ -32,16 +32,16 @@ public class MainController {
   UserDAOUserImpl dao;   // ☆
   
 
+  //検索用
   @RequestMapping(value = "/find", method = RequestMethod.GET)
   public ModelAndView index(ModelAndView mav) {
     System.out.println("デバッグ用");
     mav.setViewName("find");
-    mav.addObject("msg","Personのサンプルです。");
+    mav.addObject("msg","Userのサンプルです。");
     Iterable<User> list = dao.getAll();   // ☆
     mav.addObject("data", list);
     return mav;
   }
-
 
   @RequestMapping(value = "/find", method = RequestMethod.POST)
   public ModelAndView search(HttpServletRequest request,
@@ -54,16 +54,48 @@ public class MainController {
       mav.addObject("title","Find result");
       mav.addObject("msg","「" + param + "」の検索結果");
       mav.addObject("value",param);
-      //User data = dao.findById(Integer.parseInt(param)); 
-
-      Long id = Long.parseLong(param);
-      User data = dao.findById(id);
-
-      User[] list = new User[] {data};
+      List<User> list = dao.findByName(param);
       mav.addObject("data", list);
     }
     return mav;
   }
 
-
+  //登録用
+  @RequestMapping(value = "/add", method = RequestMethod.GET)
+public ModelAndView addUserForm(ModelAndView mav) {
+    mav.setViewName("edit");
+    mav.addObject("formModel", new User());
+    mav.addObject("title", "Add New User");
+    mav.addObject("msg", "Enter user details:");
+    return mav;
 }
+
+@RequestMapping(value = "/add", method = RequestMethod.POST)
+@Transactional
+public ModelAndView addUser(@ModelAttribute("formModel") User user, ModelAndView mav) {
+    dao.save(user);
+    mav.setViewName("redirect:/find");
+    return mav;
+}
+
+  //削除用
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
+  @Transactional
+
+  public ModelAndView delete(HttpServletRequest request, ModelAndView mav) {
+      String param = request.getParameter("delete_id");
+      if (param != null && !param.isEmpty()) {
+          Long id = Long.parseLong(param);
+          dao.deleteById(id); // DAOを使って削除処理を実行
+          mav.addObject("msg", "ID: " + id + " のユーザを削除しました。");
+      } else {
+          mav.addObject("msg", "削除するIDを指定してください。");
+      }
+      mav.setViewName("redirect:/find"); // 削除後に検索画面へリダイレクト
+      return mav;
+  }
+  
+
+  }
+
+

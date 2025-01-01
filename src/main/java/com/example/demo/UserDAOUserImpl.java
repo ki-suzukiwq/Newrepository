@@ -34,12 +34,25 @@ public class UserDAOUserImpl implements UserDAO<User> {
     return (User)entityManager.createQuery("from User where id ="+ id).getSingleResult();
   }
 
-/*   
   @Override
   public List<User> findByName(String name) {
-    return (List<User>)entityManager.createQuery("from Person where name = '" + name + "'").getResultList();
+    //return (List<User>)entityManager.createQuery("from User where name = '" + name + "'").getResultList();
+    return (List<User>) entityManager.createQuery("from User where name LIKE :name").setParameter("name", "%" + name + "%").getResultList();
   }
     //シングルクォーとはSELECT * FROM Person WHERE name = 'John';
-*/
+
+    @Override
+    public void save(User user) { // 新規追加
+        entityManager.persist(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+    User user = entityManager.find(User.class, id); // 対象ユーザを取得
+    if (user != null) {
+        entityManager.remove(user); // ユーザを削除
+    }
+}
+
 
 }
