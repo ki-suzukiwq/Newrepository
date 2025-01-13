@@ -37,12 +37,13 @@ public class MainController {
   public ModelAndView index(ModelAndView mav) {
     System.out.println("デバッグ用");
     mav.setViewName("find");
-    mav.addObject("msg","Userのサンプルです。");
+    mav.addObject("msg","名前検索");
     Iterable<User> list = dao.getAll();   // ☆
     mav.addObject("data", list);
     return mav;
   }
 
+  //一覧用
   @RequestMapping(value = "/find", method = RequestMethod.POST)
   public ModelAndView search(HttpServletRequest request,
       ModelAndView mav) {
