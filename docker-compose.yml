@@ -1,11 +1,21 @@
 version: "3.9"
+
 services:
   db:
-    build: .
+    image: mysql/mysql-server:8.0  # MySQLの公式イメージを使用
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: odaneko       # データベース名
+      MYSQL_USER: mysql             # ユーザー名
+      MYSQL_PASSWORD: mysql         # パスワード
+      MYSQL_ROOT_PASSWORD: mysql    # ルートユーザーのパスワード
+      TZ: Asia/Tokyo                # タイムゾーンの設定
     volumes:
-      - db-store:/var/lib/mysql
+      - db-store:/var/lib/mysql     # データ永続化のためのボリューム
+      - ./my.cnf:/etc/my.cnf        # 設定ファイルのマウント
     ports:
-      - "3306:3306"
+      - "3306:3306"                 # ホストとコンテナ間のポートフォワード
+    command: ['--default-authentication-plugin=mysql_native_password']  # MySQL認証方式の設定
 
 volumes:
-  db-store:
+  db-store:  # データ永続化用のボリューム

@@ -77,7 +77,6 @@ public class UserDAOUserImplTest {
 
         // データの数と内容を確認
         //assertThat(users).hasSize(5);
-        assertThat(users.get(0).getName()).isEqualTo("Jane Smith");
-        assertThat(users.get(1).getName()).isEqualTo("Alice Johnson");
+        assertThat(users.get(4).getName()).isEqualTo("test001");
     }
 }

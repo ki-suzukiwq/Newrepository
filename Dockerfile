@@ -1,10 +1,11 @@
-FROM mysql/mysql-server:8.0
+# ベースイメージを指定
+FROM openjdk:21-jdk-slim
 
-ENV MYSQL_DATABASE=odaneko \
-  MYSQL_USER=mysql \
-  MYSQL_PASSWORD=mysql \
-  MYSQL_ROOT_PASSWORD=mysql \
-  TZ=Asia/Tokyo
+# 作業ディレクトリを設定
+WORKDIR /app
 
-COPY ./my.cnf /etc/my.cnf
-RUN chmod 644 /etc/my.cnf
+# Jar ファイルをコンテナにコピー
+COPY build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# アプリケーションを実行
+ENTRYPOINT ["java", "-jar", "app.jar"]
