@@ -15,11 +15,36 @@
             <label for="name">Name:</label>
             <input type="text" id="name" th:field="*{name}" class="form-control" required>
         </div>
+
+
+        <div class="form-group">
+            <label>Gender:</label>
+            <div>
+                <input type="radio" id="male" name="gender" value="男性" th:field="*{gender}" class="form-check-input">
+                <label for="male" class="form-check-label">男性</label>
+                <br>
+
+                <input type="radio" id="female" name="gender" value="女性" th:field="*{gender}" class="form-check-input ms-3">
+                <label for="female" class="form-check-label">女性</label>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="text" id="age" th:field="*{age}" class="form-control" required>
+        </div>
+
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" id="email" th:field="*{email}" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group">
+            <label for="notes">Notes:</label>
+            <input type="text" id="notes" th:field="*{notes}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">登録</button>
     </form>
 
 <!-- 戻るボタン -->

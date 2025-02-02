@@ -2,54 +2,87 @@
 <html>
 <head>
   <title th:text="${title}"></title>
-  <meta http-equiv="Content-Type" 
-    content="text/html; charset=UTF-8" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body class="container">
-  <h2>▪️ユーザ検索</h2>
-  <h1 class="display-4 mb-4" th:text="${title}"></h1>
-  <p th:text="${msg}"></p>
-  <form method="post" action="/find">
-    <div class="input-group">
-      <input type="text" class="form-control me-1"
-          id="find_str" name="find_str" th:value="${value}" />
-      <span class="input-group-btn">
-        <input type="submit" class="btn btn-primary px-4" 
-            value="Click" />
-      </span>
-    </div>
-  </form>
   
   <table class="table">
     <thead>
-      <tr><th>ID</th><th>Name</th><th>Mail</th></tr>
+      <tr><th>ID</th><th>Name</th><th>Gender</th><th>Age</th><th>Mail</th><th>Notes</th><th>Edit</th></tr>
     </thead>
     <h2>▪️ユーザ一覧</h2>
     <tbody>
       <tr th:each="item : ${data}">
         <td th:text="${item.id}"></td>
         <td th:text="${item.name}"></td>
+        <td th:text="${item.gender}"></td>
+        <td th:text="${item.age}"></td>
         <td th:text="${item.email}"></td>
+        <td th:text="${item.notes}"></td>
+        <td>
+          <!-- 編集ボタン追加 -->
+          <a th:href="@{/update/{id}(id=${item.id})}" class="btn btn-warning btn-sm">編集</a>
+        </td>
       </tr>
     </tbody>
   </table>
 
-  <h2>▪️ユーザ削除</h2>
-  <form action="/delete" method="post">
-      <label for="delete_id">ID:</label>
-      <input type="text" id="delete_id" name="delete_id" placeholder="削除対象のユーザIDを入力してください" required />
-      <button type="submit" class="btn btn-danger">Delete</button>
+
+  <h2>▪ユーザ絞り込み（名前検索）</h2>
+  <h1 class="display-4 mb-4" th:text="${title}"></h1>
+  <form method="post" action="/find">
+    <div class="input-group">
+      <input type="text" class="form-control me-1" id="find_str" name="find_str" th:value="${value}" />
+      <span class="input-group-btn">
+        <input type="submit" class="btn btn-primary px-4" value="絞り込み" />
+      </span>
+    </div>
   </form>
 
-<!-- ユーザ登録ボタンを追加 -->
-  <div class="mt-3">
-   <a href="/add" class="btn btn-success px-4">ユーザ登録</a>
+
+  <h2>▪️ユーザ削除</h2>
+  <form id="deleteForm" action="/delete" method="post">
+      <label for="delete_id">ID:</label>
+      <input type="text" id="delete_id" name="delete_id" placeholder="削除対象のユーザIDを入力してください" required />
+      <!-- 削除ボタンにモーダルを表示するトリガーを追加 -->
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">削除</button>
+  </form>
+  
+  <!-- モーダル -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">削除確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          本当に削除しますか？
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteButton">はい</button>
+        </div>
+      </div>
+    </div>
   </div>
+  
+  <script>
+      // 「はい」ボタンがクリックされた場合にフォームを送信
+      document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+          document.getElementById('deleteForm').submit();
+      });
+  </script>
+  
+  <!-- Bootstrap 5の必要なJSとCSSを読み込み -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-
+  <!-- ユーザ登録ボタン -->
+  <div class="mt-3">
+    <a href="/add" class="btn btn-success px-4">新規登録</a>
+  </div>
 </body>
-
 </html>
