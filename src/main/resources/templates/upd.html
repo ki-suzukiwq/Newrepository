@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Update</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="container">
+    <h1 th:text="${title}"></h1>
+    <p th:text="${msg}"></p>
+
+    <form th:action="@{/update}" th:object="${formModel}" method="post">
+        <!-- ID（非表示フィールド） 
+        th:field="*{id}" を追加し、更新時に IDを維持
+        id を隠しておかないと、更新時に 新規登録扱い される可能性があり-->
+        
+        <input type="hidden" th:field="*{id}">
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Gender:</label>
+            <div>
+                <input type="radio" id="male" name="gender" value="男性" th:field="*{gender}" class="form-check-input">
+                <label for="male" class="form-check-label">男性</label>
+                <br>
+
+                <input type="radio" id="female" name="gender" value="女性" th:field="*{gender}" class="form-check-input ms-3">
+                <label for="female" class="form-check-label">女性</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" th:field="*{age}" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Notes:</label>
+            <input type="text" id="notes" th:field="*{notes}" class="form-control">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">更新</button>
+    </form>
+
+    <!-- 戻るボタン -->
+    <div class="mt-2">
+        <a href="/find" class="btn btn-secondary px-4">戻る</a>
+    </div>
+</body>
+</html>
